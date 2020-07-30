@@ -1,4 +1,4 @@
-defmodule LearningOtp.Otp.Worker do
+defmodule LearningOtp.Otp.Metrics.Worker do
   use GenServer, restart: :temporary
 
   @impl true
