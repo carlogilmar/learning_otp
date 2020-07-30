@@ -1,5 +1,10 @@
 defmodule LearningOtp.Otp.Metrics.Worker do
   use GenServer, restart: :temporary
+  @registry LearningOtp.Otp.Metrics.Registry
+
+  def start_link(path) do
+    GenServer.start_link(__MODULE__, path, name: {:via, Registry, {@registry, path}})
+  end
 
   @impl true
   def init(path) do

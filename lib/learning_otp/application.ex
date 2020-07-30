@@ -8,12 +8,9 @@ defmodule LearningOtp.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Start the Ecto repository
       LearningOtp.Repo,
-      # Start the endpoint when the application starts
-      LearningOtpWeb.Endpoint
-      # Starts a worker by calling: LearningOtp.Worker.start_link(arg)
-      # {LearningOtp.Worker, arg},
+      LearningOtpWeb.Endpoint,
+      LearningOtp.Otp.Metrics
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
