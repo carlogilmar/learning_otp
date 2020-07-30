@@ -1,5 +1,4 @@
 defmodule LearningOtp.Accounts.Metric do
-
   use Ecto.Schema
 
   @primary_key false
@@ -8,5 +7,4 @@ defmodule LearningOtp.Accounts.Metric do
     field :path, :string, primary_key: true
     field :counter, :integer, default: 0
   end
-
 end

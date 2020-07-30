@@ -4,7 +4,7 @@ defmodule LearningOtp.Otp.Worker do
   @impl true
   def init(path) do
     Process.flag(:trap_exit, true)
-    {:ok, {path, _counter=0}}
+    {:ok, {path, _counter = 0}}
   end
 
   @impl true
@@ -15,16 +15,21 @@ defmodule LearningOtp.Otp.Worker do
 
   @impl true
   def handle_info(:bump, {path, counter}) do
-    {:noreply, {path, counter+1}}
+    {:noreply, {path, counter + 1}}
   end
 
-  def schedule_upsert() do
-    Process.send_after(self, :upsert, Enum.random(10..20) * 1_000)
-  end
-
+  @impl true
   def handle_info(:upsert, {path, counter}) do
     upsert!(path, counter)
     {:noreply, {path, 0}}
+  end
+
+  @impl true
+  def terminate(_, {_path, 0}), do: :ok
+  def terminate(_, {path, counter}), do: upsert!(path, counter)
+
+  def schedule_upsert() do
+    Process.send_after(self(), :upsert, Enum.random(10..20) * 1_000)
   end
 
   defp upsert!(path, counter) do
@@ -38,9 +43,4 @@ defmodule LearningOtp.Otp.Worker do
       conflict_target: [:date, :path]
     )
   end
-
-  @impl true
-  def terminate(_, {_path, 0}), do: :ok
-  def terminate(_, {path, counter}), do: upsert!(path, counter)
-
 end
